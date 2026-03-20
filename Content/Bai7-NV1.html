@@ -2,32 +2,115 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Biểu mẫu</title>
+    <title>Biểu mẫu đăng ký</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #74ebd5, #ACB6E5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            width: 350px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .option-group {
+            margin-bottom: 15px;
+        }
+
+        .option-group input {
+            margin-right: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #4CAF50;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+    </style>
 </head>
+
 <body>
 
+<div class="container">
     <h2>Đăng ký thông tin</h2>
 
-    <form action="#" method="post">
+    <form onsubmit="return thongBao()">
 
-        Họ tên:<br>
-        <input type="text" name="hoten"><br><br>
+        <label>Họ tên</label>
+        <input type="text" name="hoten" required>
 
-        Email:<br>
-        <input type="text" name="email"><br><br>
+        <label>Email</label>
+        <input type="email" name="email" required>
 
-        Giới tính:<br>
-        <input type="radio" name="gioitinh" value="nam"> Nam<br>
-        <input type="radio" name="gioitinh" value="nu"> Nữ<br><br>
+        <label>Giới tính</label>
+        <div class="option-group">
+            <input type="radio" name="gioitinh" value="nam"> Nam
+            <input type="radio" name="gioitinh" value="nu"> Nữ
+        </div>
 
-        Sở thích:<br>
-        <input type="checkbox" name="sothich" value="game"> Game<br>
-        <input type="checkbox" name="sothich" value="nhac"> Nhạc<br>
-        <input type="checkbox" name="sothich" value="thethao"> Thể thao<br><br>
+        <label>Sở thích</label>
+        <div class="option-group">
+            <input type="checkbox" name="sothich"> Game
+            <input type="checkbox" name="sothich"> Nhạc
+            <input type="checkbox" name="sothich"> Thể thao
+        </div>
 
-        <input type="submit" value="Gửi">
+        <label>Lớp</label>
+        <select>
+            <option>12A1</option>
+            <option>12A2</option>
+            <option>12A3</option>
+        </select>
+
+        <button type="submit">Gửi thông tin</button>
 
     </form>
+</div>
+
+<script>
+function thongBao() {
+    alert("Gửi thông tin thành công!");
+    return false; // chặn reload trang
+}
+</script>
 
 </body>
 </html>
