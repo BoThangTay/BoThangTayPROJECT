@@ -2,29 +2,27 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Biểu mẫu đăng ký</title>
+<title>Đăng ký & Góp ý</title>
 
 <style>
     body {
         font-family: Arial;
-        background: linear-gradient(135deg, #667eea, #764ba2);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
+        background: linear-gradient(135deg, #4facfe, #00f2fe);
+        margin: 0;
+        padding: 0;
     }
 
     .container {
+        max-width: 450px;
+        margin: 40px auto;
         background: white;
         padding: 25px;
         border-radius: 12px;
-        width: 380px;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
     }
 
     h2 {
         text-align: center;
-        margin-bottom: 15px;
     }
 
     label {
@@ -34,7 +32,7 @@
     input, select, textarea {
         width: 100%;
         padding: 8px;
-        margin: 6px 0 10px;
+        margin: 6px 0 12px;
         border-radius: 6px;
         border: 1px solid #ccc;
     }
@@ -44,24 +42,36 @@
         gap: 10px;
     }
 
-    .error {
-        color: red;
-        font-size: 13px;
-    }
-
     button {
         width: 100%;
         padding: 10px;
-        background: #28a745;
-        color: white;
         border: none;
         border-radius: 6px;
         font-size: 16px;
         cursor: pointer;
+        margin-top: 5px;
     }
 
-    button:hover {
-        background: #218838;
+    .submit-btn {
+        background: #28a745;
+        color: white;
+    }
+
+    .feedback-btn {
+        background: #007bff;
+        color: white;
+    }
+
+    .message {
+        text-align: center;
+        margin-top: 15px;
+        font-weight: bold;
+        color: green;
+    }
+
+    .error {
+        color: red;
+        font-size: 13px;
     }
 </style>
 </head>
@@ -69,11 +79,10 @@
 <body>
 
 <div class="container">
-    <h2>Biểu mẫu đăng ký</h2>
+    <h2>Đăng ký thông tin</h2>
 
-    <form id="myForm">
+    <form id="form">
 
-        <!-- Nhiệm vụ 1 -->
         <label>Họ và tên:</label>
         <input type="text" id="name">
         <div class="error" id="nameError"></div>
@@ -82,65 +91,99 @@
         <input type="text" id="email">
         <div class="error" id="emailError"></div>
 
-        <!-- Nhiệm vụ 2 -->
         <label>Giới tính:</label>
         <div class="row">
-            <label><input type="radio" name="gender" value="Nam"> Nam</label>
-            <label><input type="radio" name="gender" value="Nữ"> Nữ</label>
+            <label><input type="radio" name="gender"> Nam</label>
+            <label><input type="radio" name="gender"> Nữ</label>
         </div>
         <div class="error" id="genderError"></div>
 
-        <label>Sở thích:</label>
-        <label><input type="checkbox"> Thể thao</label>
-        <label><input type="checkbox"> Âm nhạc</label>
-        <label><input type="checkbox"> Game</label>
+        <!-- SỞ THÍCH: người dùng tự nhập -->
+        <label>Sở thích (Thể thao, âm nhạc, game...):</label>
+        <input type="text" id="hobby" placeholder="Nhập sở thích của bạn">
 
-        <!-- Nhiệm vụ 3 -->
         <label>Lớp:</label>
         <select id="class">
             <option value="">-- Chọn lớp --</option>
-            <option>12A1</option>
-            <option>12A2</option>
-            <option>12A3</option>
-            <option>12A4</option>
-            <option>12A5</option>
-            <option>12A6</option>
-            <option>12A7</option>
-            <option>12A8</option>
-            <option>12A9</option>
-            <option>12A10</option>
-            <option>12A11</option>
-            <option>12A12</option>
-            <option>12A13</option>
-            <option>12A14</option>
-            <option>12A15</option>
+            <option>12A1</option><option>12A2</option><option>12A3</option>
+            <option>12A4</option><option>12A5</option><option>12A6</option>
+            <option>12A7</option><option>12A8</option><option>12A9</option>
+            <option>12A10</option><option>12A11</option><option>12A12</option>
+            <option>12A13</option><option>12A14</option><option>12A15</option>
         </select>
         <div class="error" id="classError"></div>
 
-        <label>Ghi chú:</label>
-        <textarea rows="3"></textarea>
+        <label>Góp ý:</label>
+        <textarea id="feedback" rows="3" placeholder="Nhập góp ý của bạn"></textarea>
 
-        <button type="submit">Gửi</button>
+        <button type="submit" class="submit-btn">Đăng ký</button>
+        <button type="button" class="feedback-btn" onclick="sendFeedback()">Góp ý</button>
+
+        <div class="message" id="message"></div>
+
     </form>
 </div>
 
 <script>
-document.getElementById("myForm").addEventListener("submit", function(e) {
+// XỬ LÝ ĐĂNG KÝ
+document.getElementById("form").addEventListener("submit", function(e){
     e.preventDefault();
 
     let valid = true;
-
-    // Reset lỗi
-    document.getElementById("nameError").innerText = "";
-    document.getElementById("emailError").innerText = "";
-    document.getElementById("genderError").innerText = "";
-    document.getElementById("classError").innerText = "";
 
     let name = document.getElementById("name").value.trim();
     let email = document.getElementById("email").value.trim();
     let gender = document.querySelector('input[name="gender"]:checked');
     let lop = document.getElementById("class").value;
 
+    // reset lỗi
+    document.getElementById("nameError").innerText = "";
+    document.getElementById("emailError").innerText = "";
+    document.getElementById("genderError").innerText = "";
+    document.getElementById("classError").innerText = "";
+    document.getElementById("message").innerText = "";
+
+    if(name === ""){
+        document.getElementById("nameError").innerText = "Nhập tên!";
+        valid = false;
+    }
+
+    if(!email.includes("@")){
+        document.getElementById("emailError").innerText = "Email sai!";
+        valid = false;
+    }
+
+    if(!gender){
+        document.getElementById("genderError").innerText = "Chọn giới tính!";
+        valid = false;
+    }
+
+    if(lop === ""){
+        document.getElementById("classError").innerText = "Chọn lớp!";
+        valid = false;
+    }
+
+    if(valid){
+        document.getElementById("message").innerText = "Đăng ký thành công!";
+    }
+});
+
+// XỬ LÝ GÓP Ý
+function sendFeedback(){
+    let feedback = document.getElementById("feedback").value.trim();
+
+    if(feedback === ""){
+        document.getElementById("message").style.color = "red";
+        document.getElementById("message").innerText = "Bạn chưa nhập góp ý!";
+    } else {
+        document.getElementById("message").style.color = "green";
+        document.getElementById("message").innerText = "Cảm ơn bạn đã góp ý";
+    }
+}
+</script>
+
+</body>
+</html>
     // Check tên
     if (name === "") {
         document.getElementById("nameError").innerText = "Vui lòng nhập tên";
