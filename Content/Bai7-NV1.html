@@ -73,6 +73,15 @@
         color: red;
         font-size: 13px;
     }
+
+    /* KHUNG GÓP Ý */
+    .feedback-box {
+        margin-top: 20px;
+        padding: 15px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background: #f9f9f9;
+    }
 </style>
 </head>
 
@@ -98,8 +107,7 @@
         </div>
         <div class="error" id="genderError"></div>
 
-        <!-- SỞ THÍCH: người dùng tự nhập -->
-        <label>Sở thích (Thể thao, âm nhạc, game...):</label>
+        <label>Sở thích:</label>
         <input type="text" id="hobby" placeholder="Nhập sở thích của bạn">
 
         <label>Lớp:</label>
@@ -113,15 +121,23 @@
         </select>
         <div class="error" id="classError"></div>
 
-        <label>Góp ý:</label>
-        <textarea id="feedback" rows="3" placeholder="Nhập góp ý của bạn"></textarea>
-
         <button type="submit" class="submit-btn">Đăng ký</button>
-        <button type="button" class="feedback-btn" onclick="sendFeedback()">Góp ý</button>
 
         <div class="message" id="message"></div>
 
     </form>
+
+    <!-- KHUNG GÓP Ý MỚI -->
+    <div class="feedback-box">
+        <h3>Góp ý</h3>
+
+        <textarea id="feedback" rows="3" placeholder="Nhập góp ý của bạn"></textarea>
+
+        <button class="feedback-btn" onclick="sendFeedback()">Gửi góp ý</button>
+
+        <div class="message" id="feedbackMessage"></div>
+    </div>
+
 </div>
 
 <script>
@@ -136,7 +152,6 @@ document.getElementById("form").addEventListener("submit", function(e){
     let gender = document.querySelector('input[name="gender"]:checked');
     let lop = document.getElementById("class").value;
 
-    // reset lỗi
     document.getElementById("nameError").innerText = "";
     document.getElementById("emailError").innerText = "";
     document.getElementById("genderError").innerText = "";
@@ -168,50 +183,20 @@ document.getElementById("form").addEventListener("submit", function(e){
     }
 });
 
-// XỬ LÝ GÓP Ý
+// XỬ LÝ GÓP Ý (ĐÃ SỬA CHUẨN)
 function sendFeedback(){
     let feedback = document.getElementById("feedback").value.trim();
+    let msg = document.getElementById("feedbackMessage");
 
     if(feedback === ""){
-        document.getElementById("message").style.color = "red";
-        document.getElementById("message").innerText = "Bạn chưa nhập góp ý!";
+        msg.style.color = "red";
+        msg.innerText = "Bạn chưa nhập góp ý!";
     } else {
-        document.getElementById("message").style.color = "green";
-        document.getElementById("message").innerText = "Cảm ơn bạn đã góp ý";
+        msg.style.color = "green";
+        msg.innerText = "Cảm ơn bạn đã góp ý";
+        document.getElementById("feedback").value = "";
     }
 }
-</script>
-
-</body>
-</html>
-    // Check tên
-    if (name === "") {
-        document.getElementById("nameError").innerText = "Vui lòng nhập tên";
-        valid = false;
-    }
-
-    // Check email
-    if (!email.includes("@")) {
-        document.getElementById("emailError").innerText = "Email không hợp lệ";
-        valid = false;
-    }
-
-    // Check giới tính
-    if (!gender) {
-        document.getElementById("genderError").innerText = "Chọn giới tính";
-        valid = false;
-    }
-
-    // Check lớp
-    if (lop === "") {
-        document.getElementById("classError").innerText = "Chọn lớp";
-        valid = false;
-    }
-
-    if (valid) {
-        alert("Gửi thành công!");
-    }
-});
 </script>
 
 </body>
