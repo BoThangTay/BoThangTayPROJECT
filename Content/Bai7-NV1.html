@@ -3,20 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Biểu mẫu đăng ký</title>
-
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #74ebd5, #ACB6E5);
+            font-family: Arial;
+            background: linear-gradient(135deg, #74ebd5, #ACB6E5);
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
         }
 
-        .container {
+        .form-container {
             background: white;
-            padding: 30px;
+            padding: 25px;
             border-radius: 12px;
             width: 350px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.2);
@@ -24,93 +23,78 @@
 
         h2 {
             text-align: center;
-            margin-bottom: 20px;
-            color: #333;
         }
 
-        label {
-            font-weight: bold;
-        }
-
-        input[type="text"],
-        input[type="email"],
-        select {
+        input, select, textarea {
             width: 100%;
             padding: 8px;
-            margin: 8px 0 15px;
-            border: 1px solid #ccc;
+            margin: 8px 0;
             border-radius: 6px;
-        }
-
-        .option-group {
-            margin-bottom: 15px;
-        }
-
-        .option-group input {
-            margin-right: 5px;
+            border: 1px solid #ccc;
         }
 
         button {
             width: 100%;
             padding: 10px;
             background: #4CAF50;
-            border: none;
             color: white;
-            font-size: 16px;
+            border: none;
             border-radius: 6px;
+            font-size: 16px;
             cursor: pointer;
         }
 
         button:hover {
             background: #45a049;
         }
+
+        .gender {
+            display: flex;
+            justify-content: space-around;
+        }
     </style>
 </head>
-
 <body>
 
-<div class="container">
-    <h2>Đăng ký thông tin</h2>
+<div class="form-container">
+    <h2>Biểu mẫu đăng ký</h2>
 
-    <form onsubmit="return thongBao()">
+    <form action="#" method="post">
 
-        <label>Họ tên</label>
-        <input type="text" name="hoten" required>
+        <!-- Nhiệm vụ 1 -->
+        <label>Họ và tên:</label>
+        <input type="text" name="name" placeholder="Nhập họ tên">
 
-        <label>Email</label>
-        <input type="email" name="email" required>
+        <label>Email:</label>
+        <input type="email" name="email" placeholder="Nhập email">
 
-        <label>Giới tính</label>
-        <div class="option-group">
-            <input type="radio" name="gioitinh" value="nam"> Nam
-            <input type="radio" name="gioitinh" value="nu"> Nữ
+        <!-- Nhiệm vụ 2 -->
+        <label>Giới tính:</label>
+        <div class="gender">
+            <label><input type="radio" name="gender"> Nam</label>
+            <label><input type="radio" name="gender"> Nữ</label>
         </div>
 
-        <label>Sở thích</label>
-        <div class="option-group">
-            <input type="checkbox" name="sothich"> Game
-            <input type="checkbox" name="sothich"> Nhạc
-            <input type="checkbox" name="sothich"> Thể thao
-        </div>
+        <label>Sở thích:</label>
+        <label><input type="checkbox"> Thể thao</label>
+        <label><input type="checkbox"> Âm nhạc</label>
+        <label><input type="checkbox"> Game</label>
 
-        <label>Lớp</label>
+        <!-- Nhiệm vụ 3 -->
+        <label>Lớp:</label>
         <select>
             <option>12A1</option>
             <option>12A2</option>
             <option>12A3</option>
         </select>
 
-        <button type="submit">Gửi thông tin</button>
+        <label>Ghi chú:</label>
+        <textarea rows="3"></textarea>
+
+        <button type="submit">Gửi</button>
 
     </form>
 </div>
-
-<script>
-function thongBao() {
-    alert("Gửi thông tin thành công!");
-    return false; // chặn reload trang
-}
-</script>
 
 </body>
 </html>
