@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Đăng ký hội thao</title>
+
+<style>
+body{
+    font-family:Arial;
+    background:#f0f2f5;
+}
+
+.container{
+    max-width:400px;
+    margin:50px auto;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+h3{text-align:center}
+
+input{
+    margin:5px 0;
+}
+
+button{
+    width:100%;
+    padding:8px;
+    margin-top:10px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.submit{background:#28a745;color:white}
+.reset{background:#dc3545;color:white}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<form>
+
+<h3>Tham gia hội thao</h3>
+
+<p>Họ và tên:</p>
+<input type="text" required>
+
+<p>Email:</p>
+<input type="email" required>
+
+<p>Chọn lớp:</p>
+<label><input type="radio" name="lop"> Lớp 10</label><br>
+<label><input type="radio" name="lop"> Lớp 11</label><br>
+<label><input type="radio" name="lop"> Lớp 12</label>
+
+<p>Tham dự môn:</p>
+<label><input type="checkbox"> Bóng bàn</label><br>
+<label><input type="checkbox"> Cầu lông</label><br>
+<label><input type="checkbox"> Cờ vua</label>
+
+<button type="submit" class="submit">Đăng ký</button>
+<button type="reset" class="reset">Huỷ bỏ</button>
+
+</form>
+
+</div>
+
+<script>
+document.querySelector("form").addEventListener("submit", function(e){
+    e.preventDefault();
+    alert("Đăng ký thành công!");
+});
+</script>
+
+</body>
+</html>
