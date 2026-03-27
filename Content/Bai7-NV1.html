@@ -2,202 +2,230 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Đăng ký & Góp ý</title>
+<title>Form xịn</title>
 
 <style>
-    body {
-        font-family: Arial;
-        background: linear-gradient(135deg, #4facfe, #00f2fe);
-        margin: 0;
-    }
+*{box-sizing:border-box}
+body{
+    font-family:Arial;
+    background:linear-gradient(135deg,#4facfe,#00f2fe);
+    margin:0;
+}
 
-    .container {
-        max-width: 450px;
-        margin: 40px auto;
-        background: white;
-        padding: 25px;
-        border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-    }
+/* card */
+.container{
+    max-width:420px;
+    margin:40px auto;
+    background:white;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 15px 30px rgba(0,0,0,0.3);
+    animation:fade .5s;
+}
 
-    h2, h3 {
-        text-align: center;
-    }
+h2,h3{text-align:center}
 
-    input, select, textarea {
-        width: 100%;
-        padding: 8px;
-        margin: 6px 0 12px;
-        border-radius: 6px;
-        border: 1px solid #ccc;
-    }
+input,select,textarea{
+    width:100%;
+    padding:10px;
+    margin:6px 0 12px;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
 
-    .row {
-        display: flex;
-        gap: 10px;
-    }
+input:focus{border-color:#4facfe;outline:none}
 
-    button {
-        width: 100%;
-        padding: 10px;
-        border: none;
-        border-radius: 6px;
-        font-size: 16px;
-        cursor: pointer;
-        margin-top: 5px;
-    }
+.row{display:flex;gap:10px}
 
-    .submit-btn {
-        background: #28a745;
-        color: white;
-    }
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
 
-    .feedback-btn {
-        background: #007bff;
-        color: white;
-    }
+.submit-btn{background:#28a745;color:white}
+.feedback-btn{background:#007bff;color:white}
 
-    .error {
-        color: red;
-        font-size: 13px;
-    }
+/* password */
+.password-box{position:relative}
+.toggle{
+    position:absolute;
+    right:10px;
+    top:35%;
+    cursor:pointer;
+}
 
-    .feedback-box {
-        margin-top: 20px;
-        padding: 15px;
-        border-radius: 10px;
-        background: #f9f9f9;
-    }
+/* strength bar */
+.strength{
+    height:6px;
+    border-radius:5px;
+    background:#ddd;
+    margin-bottom:10px;
+}
+.strength-bar{
+    height:100%;
+    width:0%;
+    border-radius:5px;
+    transition:.3s;
+}
 
-    /* TRANG CẢM ƠN */
-    .thankyou {
-        display: none;
-        text-align: center;
-        padding: 100px 20px;
-    }
+/* toast */
+.toast{
+    position:fixed;
+    bottom:20px;
+    right:20px;
+    background:#333;
+    color:white;
+    padding:10px 20px;
+    border-radius:8px;
+    opacity:0;
+    transition:.3s;
+}
+.toast.show{opacity:1}
 
-    .thankyou h1 {
-        font-size: 35px;
-    }
+/* thank page */
+.thank{
+    display:none;
+    text-align:center;
+    padding:100px;
+}
 
-    .back-btn {
-        width: auto;
-        padding: 10px 20px;
-        background: #333;
-        color: white;
-    }
+/* anim */
+@keyframes fade{
+from{opacity:0;transform:translateY(20px)}
+to{opacity:1}
+}
 </style>
 </head>
 
 <body>
 
-<!-- TRANG CHÍNH -->
-<div id="mainPage" class="container">
-    <h2>Đăng ký thông tin</h2>
+<div id="main" class="container">
+<h2>Đăng ký</h2>
 
-    <form id="form">
-        <label>Họ và tên:</label>
-        <input type="text" id="name">
-        <div class="error" id="nameError"></div>
+<form id="form">
 
-        <label>Email:</label>
-        <input type="text" id="email">
-        <div class="error" id="emailError"></div>
+<input id="name" placeholder="Họ tên">
+<input id="email" placeholder="Email">
 
-        <label>Giới tính:</label>
-        <div class="row">
-            <label><input type="radio" name="gender"> Nam</label>
-            <label><input type="radio" name="gender"> Nữ</label>
-        </div>
-        <div class="error" id="genderError"></div>
-
-        <label>Lớp:</label>
-        <select id="class">
-            <option value="">-- Chọn lớp --</option>
-            <option>12A1</option>
-            <option>12A2</option>
-            <option>12A3</option>
-        </select>
-        <div class="error" id="classError"></div>
-
-        <button type="submit" class="submit-btn">Đăng ký</button>
-    </form>
-
-    <!-- GÓP Ý -->
-    <div class="feedback-box">
-        <h3>Góp ý</h3>
-        <textarea id="feedback" rows="3" placeholder="Nhập góp ý..."></textarea>
-
-        <!-- QUAN TRỌNG: type="button" -->
-        <button type="button" class="feedback-btn" onclick="sendFeedback()">Gửi góp ý</button>
-    </div>
+<div class="password-box">
+<input type="password" id="password" placeholder="Mật khẩu">
+<span class="toggle" onclick="togglePass()">👁</span>
 </div>
 
-<!-- TRANG CẢM ƠN -->
-<div id="thankPage" class="thankyou">
-    <h1>Cảm ơn bạn đã góp ý</h1>
-    <p>Chúng tôi xin ghi nhận ý kiến của bạn</p>
-    <button class="back-btn" onclick="goBack()">Quay lại</button>
+<div class="strength"><div id="bar" class="strength-bar"></div></div>
+
+<input type="password" id="confirm" placeholder="Nhập lại mật khẩu">
+
+<button type="submit" class="submit-btn">Đăng ký</button>
+</form>
+
+<h3>Góp ý</h3>
+<textarea id="fb"></textarea>
+<button class="feedback-btn" type="button" onclick="sendFB()">Gửi góp ý</button>
+
 </div>
+
+<div id="thank" class="thank">
+<h1>Cảm ơn bạn!</h1>
+<button onclick="back()">Quay lại</button>
+</div>
+
+<div id="toast" class="toast"></div>
 
 <script>
-// FORM
-document.getElementById("form").addEventListener("submit", function(e){
-    e.preventDefault();
-
-    let name = document.getElementById("name").value.trim();
-    let email = document.getElementById("email").value.trim();
-    let gender = document.querySelector('input[name="gender"]:checked');
-    let lop = document.getElementById("class").value;
-
-    document.getElementById("nameError").innerText = "";
-    document.getElementById("emailError").innerText = "";
-    document.getElementById("genderError").innerText = "";
-    document.getElementById("classError").innerText = "";
-
-    let valid = true;
-
-    if(name === ""){
-        document.getElementById("nameError").innerText = "Nhập tên!";
-        valid = false;
-    }
-
-    if(!email.includes("@")){
-        document.getElementById("emailError").innerText = "Email sai!";
-        valid = false;
-    }
-
-    if(!gender){
-        document.getElementById("genderError").innerText = "Chọn giới tính!";
-        valid = false;
-    }
-
-    if(lop === ""){
-        document.getElementById("classError").innerText = "Chọn lớp!";
-        valid = false;
-    }
-
-    if(valid){
-        alert("Đăng ký thành công!");
-    }
-});
-
-// GÓP Ý → CHUYỂN TRANG
-function sendFeedback(){
-    let feedback = document.getElementById("feedback").value.trim();
-
-    if(feedback === ""){
-        alert("Bạn chưa nhập góp ý!");
-    } else {
-        document.getElementById("mainPage").style.display = "none";
-        document.getElementById("thankPage").style.display = "block";
-    }
+// toast
+function show(msg){
+let t=document.getElementById("toast");
+t.innerText=msg;
+t.classList.add("show");
+setTimeout(()=>t.classList.remove("show"),2000);
 }
 
-// QUAY LẠI
-function goBack(){
-    document.getElementById("thankPage").style.display = "none";
-    document.getElementById("mainPage").style.display = "block";
+// toggle
+function togglePass(){
+let p=document.getElementById("password");
+let icon=document.querySelector(".toggle");
+
+if(p.type==="password"){
+    p.type="text";
+    icon.innerText="🙈";
+}else{
+    p.type="password";
+    icon.innerText="👁";
+}
+}
+
+// strength
+document.getElementById("password").addEventListener("input",function(){
+let v=this.value;
+let bar=document.getElementById("bar");
+
+let score=0;
+if(v.length>5) score++;
+if(/[A-Z]/.test(v)) score++;
+if(/[0-9]/.test(v)) score++;
+if(/[^A-Za-z0-9]/.test(v)) score++;
+
+let width=["0%","25%","50%","75%","100%"];
+let color=["","#ff4d4d","#ffa500","#4facfe","#28a745"];
+
+bar.style.width=width[score];
+bar.style.background=color[score];
+});
+
+// form
+document.getElementById("form").addEventListener("submit",e=>{
+e.preventDefault();
+
+let name=document.getElementById("name").value.trim();
+let email=document.getElementById("email").value.trim();
+let p=document.getElementById("password").value;
+let c=document.getElementById("confirm").value;
+
+if(!name||!email||!p||!c){
+    show("Điền đủ thông tin!");
+    return;
+}
+
+if(!email.includes("@")){
+    show("Email sai!");
+    return;
+}
+
+if(p.length<6){
+    show("Mật khẩu yếu!");
+    return;
+}
+
+if(p!==c){
+    show("Mật khẩu không khớp!");
+    return;
+}
+
+show("Đăng ký thành công!");
+document.getElementById("form").reset();
+document.getElementById("bar").style.width="0%";
+});
+
+// feedback
+function sendFB(){
+let fb=document.getElementById("fb").value.trim();
+
+if(!fb){
+    show("Nhập góp ý!");
+}else{
+    document.getElementById("main").style.display="none";
+    document.getElementById("thank").style.display="block";
+}
+}
+
+// back
+function back(){
+document.getElementById("thank").style.display="none";
+document.getElementById("main").style.display="block";
 }
 </script>
 
