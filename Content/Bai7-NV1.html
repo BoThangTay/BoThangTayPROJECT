@@ -5,11 +5,14 @@
 <title>Đăng ký & Góp ý</title>
 
 <style>
+    * {
+        box-sizing: border-box;
+    }
+
     body {
         font-family: Arial;
         background: linear-gradient(135deg, #4facfe, #00f2fe);
         margin: 0;
-        padding: 0;
     }
 
     .container {
@@ -17,11 +20,12 @@
         margin: 40px auto;
         background: white;
         padding: 25px;
-        border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        border-radius: 15px;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        animation: fadeIn 0.5s ease;
     }
 
-    h2 {
+    h2, h3 {
         text-align: center;
     }
 
@@ -31,10 +35,16 @@
 
     input, select, textarea {
         width: 100%;
-        padding: 8px;
+        padding: 10px;
         margin: 6px 0 12px;
-        border-radius: 6px;
+        border-radius: 8px;
         border: 1px solid #ccc;
+        transition: 0.2s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+        border-color: #4facfe;
+        outline: none;
     }
 
     .row {
@@ -44,12 +54,13 @@
 
     button {
         width: 100%;
-        padding: 10px;
+        padding: 12px;
         border: none;
-        border-radius: 6px;
+        border-radius: 8px;
         font-size: 16px;
         cursor: pointer;
         margin-top: 5px;
+        transition: 0.3s;
     }
 
     .submit-btn {
@@ -57,16 +68,17 @@
         color: white;
     }
 
+    .submit-btn:hover {
+        background: #218838;
+    }
+
     .feedback-btn {
         background: #007bff;
         color: white;
     }
 
-    .message {
-        text-align: center;
-        margin-top: 15px;
-        font-weight: bold;
-        color: green;
+    .feedback-btn:hover {
+        background: #0056b3;
     }
 
     .error {
@@ -74,24 +86,77 @@
         font-size: 13px;
     }
 
-    /* KHUNG GÓP Ý */
     .feedback-box {
         margin-top: 20px;
         padding: 15px;
-        border: 1px solid #ccc;
         border-radius: 10px;
-        background: #f9f9f9;
+        background: #f4f8ff;
+    }
+
+    /* TRANG CẢM ƠN */
+    .thankyou {
+        display: none;
+        text-align: center;
+        padding: 100px 20px;
+        color: #333;
+        animation: fadeIn 0.5s ease;
+    }
+
+    .thankyou h1 {
+        font-size: 35px;
+    }
+
+    .thankyou p {
+        font-size: 18px;
+        margin: 15px 0;
+    }
+
+    .back-btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        background: #333;
+        color: white;
+        cursor: pointer;
+    }
+
+    .back-btn:hover {
+        background: black;
+    }
+
+    /* TOAST */
+    .toast {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #333;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: 0.4s;
+    }
+
+    .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    @keyframes fadeIn {
+        from {opacity: 0; transform: translateY(20px);}
+        to {opacity: 1; transform: translateY(0);}
     }
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<!-- FORM -->
+<div id="mainPage" class="container">
     <h2>Đăng ký thông tin</h2>
 
     <form id="form">
-
         <label>Họ và tên:</label>
         <input type="text" id="name">
         <div class="error" id="nameError"></div>
@@ -107,41 +172,47 @@
         </div>
         <div class="error" id="genderError"></div>
 
-        <label>Sở thích:</label>
-        <input type="text" id="hobby" placeholder="Nhập sở thích của bạn">
-
         <label>Lớp:</label>
         <select id="class">
             <option value="">-- Chọn lớp --</option>
-            <option>12A1</option><option>12A2</option><option>12A3</option>
-            <option>12A4</option><option>12A5</option><option>12A6</option>
-            <option>12A7</option><option>12A8</option><option>12A9</option>
-            <option>12A10</option><option>12A11</option><option>12A12</option>
-            <option>12A13</option><option>12A14</option><option>12A15</option>
+            <option>12A1</option><option>12A2</option>
+            <option>12A3</option><option>12A4</option>
         </select>
         <div class="error" id="classError"></div>
 
         <button type="submit" class="submit-btn">Đăng ký</button>
-
-        <div class="message" id="message"></div>
-
     </form>
 
-    <!-- KHUNG GÓP Ý MỚI -->
     <div class="feedback-box">
         <h3>Góp ý</h3>
-
-        <textarea id="feedback" rows="3" placeholder="Nhập góp ý của bạn"></textarea>
-
+        <textarea id="feedback" rows="3" placeholder="Nhập góp ý..."></textarea>
         <button class="feedback-btn" onclick="sendFeedback()">Gửi góp ý</button>
-
-        <div class="message" id="feedbackMessage"></div>
     </div>
-
 </div>
 
+<!-- TRANG CẢM ƠN -->
+<div id="thankPage" class="thankyou">
+    <h1>Cảm ơn bạn đã góp ý</h1>
+    <p>Chúng tôi xin ghi nhận ý kiến của bạn</p>
+    <button class="back-btn" onclick="goBack()">Quay lại</button>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast"></div>
+
 <script>
-// XỬ LÝ ĐĂNG KÝ
+// TOAST
+function showToast(msg){
+    let t = document.getElementById("toast");
+    t.innerText = msg;
+    t.classList.add("show");
+
+    setTimeout(() => {
+        t.classList.remove("show");
+    }, 2000);
+}
+
+// FORM
 document.getElementById("form").addEventListener("submit", function(e){
     e.preventDefault();
 
@@ -156,7 +227,6 @@ document.getElementById("form").addEventListener("submit", function(e){
     document.getElementById("emailError").innerText = "";
     document.getElementById("genderError").innerText = "";
     document.getElementById("classError").innerText = "";
-    document.getElementById("message").innerText = "";
 
     if(name === ""){
         document.getElementById("nameError").innerText = "Nhập tên!";
@@ -179,23 +249,26 @@ document.getElementById("form").addEventListener("submit", function(e){
     }
 
     if(valid){
-        document.getElementById("message").innerText = "Đăng ký thành công!";
+        showToast("Đăng ký thành công!");
     }
 });
 
-// XỬ LÝ GÓP Ý (ĐÃ SỬA CHUẨN)
+// GÓP Ý
 function sendFeedback(){
     let feedback = document.getElementById("feedback").value.trim();
-    let msg = document.getElementById("feedbackMessage");
 
     if(feedback === ""){
-        msg.style.color = "red";
-        msg.innerText = "Bạn chưa nhập góp ý!";
+        showToast("Bạn chưa nhập góp ý!");
     } else {
-        msg.style.color = "green";
-        msg.innerText = "Cảm ơn bạn đã góp ý";
-        document.getElementById("feedback").value = "";
+        document.getElementById("mainPage").style.display = "none";
+        document.getElementById("thankPage").style.display = "block";
     }
+}
+
+// QUAY LẠI
+function goBack(){
+    document.getElementById("thankPage").style.display = "none";
+    document.getElementById("mainPage").style.display = "block";
 }
 </script>
 
