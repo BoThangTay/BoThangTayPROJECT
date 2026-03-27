@@ -5,10 +5,6 @@
 <title>Đăng ký & Góp ý</title>
 
 <style>
-    * {
-        box-sizing: border-box;
-    }
-
     body {
         font-family: Arial;
         background: linear-gradient(135deg, #4facfe, #00f2fe);
@@ -20,31 +16,20 @@
         margin: 40px auto;
         background: white;
         padding: 25px;
-        border-radius: 15px;
-        box-shadow: 0 15px 30px rgba(0,0,0,0.3);
-        animation: fadeIn 0.5s ease;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
     }
 
     h2, h3 {
         text-align: center;
     }
 
-    label {
-        font-weight: bold;
-    }
-
     input, select, textarea {
         width: 100%;
-        padding: 10px;
+        padding: 8px;
         margin: 6px 0 12px;
-        border-radius: 8px;
+        border-radius: 6px;
         border: 1px solid #ccc;
-        transition: 0.2s;
-    }
-
-    input:focus, textarea:focus, select:focus {
-        border-color: #4facfe;
-        outline: none;
     }
 
     .row {
@@ -54,13 +39,12 @@
 
     button {
         width: 100%;
-        padding: 12px;
+        padding: 10px;
         border: none;
-        border-radius: 8px;
+        border-radius: 6px;
         font-size: 16px;
         cursor: pointer;
         margin-top: 5px;
-        transition: 0.3s;
     }
 
     .submit-btn {
@@ -68,17 +52,9 @@
         color: white;
     }
 
-    .submit-btn:hover {
-        background: #218838;
-    }
-
     .feedback-btn {
         background: #007bff;
         color: white;
-    }
-
-    .feedback-btn:hover {
-        background: #0056b3;
     }
 
     .error {
@@ -90,7 +66,7 @@
         margin-top: 20px;
         padding: 15px;
         border-radius: 10px;
-        background: #f4f8ff;
+        background: #f9f9f9;
     }
 
     /* TRANG CẢM ƠN */
@@ -98,61 +74,24 @@
         display: none;
         text-align: center;
         padding: 100px 20px;
-        color: #333;
-        animation: fadeIn 0.5s ease;
     }
 
     .thankyou h1 {
         font-size: 35px;
     }
 
-    .thankyou p {
-        font-size: 18px;
-        margin: 15px 0;
-    }
-
     .back-btn {
+        width: auto;
         padding: 10px 20px;
-        border: none;
-        border-radius: 8px;
         background: #333;
         color: white;
-        cursor: pointer;
-    }
-
-    .back-btn:hover {
-        background: black;
-    }
-
-    /* TOAST */
-    .toast {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background: #333;
-        color: white;
-        padding: 12px 20px;
-        border-radius: 8px;
-        opacity: 0;
-        transform: translateY(20px);
-        transition: 0.4s;
-    }
-
-    .toast.show {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    @keyframes fadeIn {
-        from {opacity: 0; transform: translateY(20px);}
-        to {opacity: 1; transform: translateY(0);}
     }
 </style>
 </head>
 
 <body>
 
-<!-- FORM -->
+<!-- TRANG CHÍNH -->
 <div id="mainPage" class="container">
     <h2>Đăng ký thông tin</h2>
 
@@ -175,18 +114,22 @@
         <label>Lớp:</label>
         <select id="class">
             <option value="">-- Chọn lớp --</option>
-            <option>12A1</option><option>12A2</option>
-            <option>12A3</option><option>12A4</option>
+            <option>12A1</option>
+            <option>12A2</option>
+            <option>12A3</option>
         </select>
         <div class="error" id="classError"></div>
 
         <button type="submit" class="submit-btn">Đăng ký</button>
     </form>
 
+    <!-- GÓP Ý -->
     <div class="feedback-box">
         <h3>Góp ý</h3>
         <textarea id="feedback" rows="3" placeholder="Nhập góp ý..."></textarea>
-        <button class="feedback-btn" onclick="sendFeedback()">Gửi góp ý</button>
+
+        <!-- QUAN TRỌNG: type="button" -->
+        <button type="button" class="feedback-btn" onclick="sendFeedback()">Gửi góp ý</button>
     </div>
 </div>
 
@@ -197,26 +140,10 @@
     <button class="back-btn" onclick="goBack()">Quay lại</button>
 </div>
 
-<!-- TOAST -->
-<div id="toast" class="toast"></div>
-
 <script>
-// TOAST
-function showToast(msg){
-    let t = document.getElementById("toast");
-    t.innerText = msg;
-    t.classList.add("show");
-
-    setTimeout(() => {
-        t.classList.remove("show");
-    }, 2000);
-}
-
 // FORM
 document.getElementById("form").addEventListener("submit", function(e){
     e.preventDefault();
-
-    let valid = true;
 
     let name = document.getElementById("name").value.trim();
     let email = document.getElementById("email").value.trim();
@@ -227,6 +154,8 @@ document.getElementById("form").addEventListener("submit", function(e){
     document.getElementById("emailError").innerText = "";
     document.getElementById("genderError").innerText = "";
     document.getElementById("classError").innerText = "";
+
+    let valid = true;
 
     if(name === ""){
         document.getElementById("nameError").innerText = "Nhập tên!";
@@ -249,16 +178,16 @@ document.getElementById("form").addEventListener("submit", function(e){
     }
 
     if(valid){
-        showToast("Đăng ký thành công!");
+        alert("Đăng ký thành công!");
     }
 });
 
-// GÓP Ý
+// GÓP Ý → CHUYỂN TRANG
 function sendFeedback(){
     let feedback = document.getElementById("feedback").value.trim();
 
     if(feedback === ""){
-        showToast("Bạn chưa nhập góp ý!");
+        alert("Bạn chưa nhập góp ý!");
     } else {
         document.getElementById("mainPage").style.display = "none";
         document.getElementById("thankPage").style.display = "block";
