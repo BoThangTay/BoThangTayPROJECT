@@ -2,230 +2,210 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Form xịn</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đăng ký & Góp ý</title>
 
 <style>
-*{box-sizing:border-box}
 body{
     font-family:Arial;
     background:linear-gradient(135deg,#4facfe,#00f2fe);
     margin:0;
 }
 
-/* card */
 .container{
-    max-width:420px;
+    max-width:450px;
     margin:40px auto;
     background:white;
     padding:25px;
-    border-radius:15px;
-    box-shadow:0 15px 30px rgba(0,0,0,0.3);
-    animation:fade .5s;
+    border-radius:12px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.3);
 }
 
 h2,h3{text-align:center}
 
 input,select,textarea{
     width:100%;
-    padding:10px;
+    padding:8px;
     margin:6px 0 12px;
-    border-radius:8px;
+    border-radius:6px;
     border:1px solid #ccc;
 }
-
-input:focus{border-color:#4facfe;outline:none}
 
 .row{display:flex;gap:10px}
 
 button{
     width:100%;
-    padding:12px;
+    padding:10px;
     border:none;
-    border-radius:8px;
+    border-radius:6px;
     cursor:pointer;
 }
 
 .submit-btn{background:#28a745;color:white}
 .feedback-btn{background:#007bff;color:white}
 
+.error{color:red;font-size:13px}
+
+.feedback-box{
+    margin-top:20px;
+    padding:15px;
+    border-radius:10px;
+    background:#f9f9f9;
+}
+
 /* password */
-.password-box{position:relative}
-.toggle{
+.pass-box{position:relative}
+.eye{
     position:absolute;
     right:10px;
-    top:35%;
+    top:50%;
+    transform:translateY(-50%);
     cursor:pointer;
 }
 
-/* strength bar */
-.strength{
-    height:6px;
-    border-radius:5px;
-    background:#ddd;
-    margin-bottom:10px;
-}
-.strength-bar{
-    height:100%;
-    width:0%;
-    border-radius:5px;
-    transition:.3s;
-}
-
-/* toast */
-.toast{
-    position:fixed;
-    bottom:20px;
-    right:20px;
-    background:#333;
-    color:white;
-    padding:10px 20px;
-    border-radius:8px;
-    opacity:0;
-    transition:.3s;
-}
-.toast.show{opacity:1}
-
 /* thank page */
-.thank{
+.thankyou{
     display:none;
     text-align:center;
-    padding:100px;
+    padding:100px 20px;
 }
 
-/* anim */
-@keyframes fade{
-from{opacity:0;transform:translateY(20px)}
-to{opacity:1}
+.back-btn{
+    width:auto;
+    padding:10px 20px;
+    background:#333;
+    color:white;
 }
 </style>
 </head>
 
 <body>
 
-<div id="main" class="container">
-<h2>Đăng ký</h2>
+<div id="mainPage" class="container">
+<h2>Đăng ký thông tin</h2>
 
 <form id="form">
 
-<input id="name" placeholder="Họ tên">
-<input id="email" placeholder="Email">
+<label>Họ và tên:</label>
+<input type="text" id="name" required>
+<div class="error" id="nameError"></div>
 
-<div class="password-box">
-<input type="password" id="password" placeholder="Mật khẩu">
-<span class="toggle" onclick="togglePass()">👁</span>
+<label>Email:</label>
+<input type="email" id="email" required>
+<div class="error" id="emailError"></div>
+
+<label>Mật khẩu:</label>
+<div class="pass-box">
+<input type="password" id="password" required>
+<span class="eye" onclick="togglePass()">👁</span>
 </div>
+<div class="error" id="passwordError"></div>
 
-<div class="strength"><div id="bar" class="strength-bar"></div></div>
+<label>Giới tính:</label>
+<div class="row">
+<label><input type="radio" name="gender" value="Nam"> Nam</label>
+<label><input type="radio" name="gender" value="Nữ"> Nữ</label>
+</div>
+<div class="error" id="genderError"></div>
 
-<input type="password" id="confirm" placeholder="Nhập lại mật khẩu">
+<label>Lớp:</label>
+<select id="class" required>
+<option value="">-- Chọn lớp --</option>
+<option>12A1</option>
+<option>12A2</option>
+<option>12A3</option>
+</select>
+<div class="error" id="classError"></div>
 
 <button type="submit" class="submit-btn">Đăng ký</button>
 </form>
 
+<div class="feedback-box">
 <h3>Góp ý</h3>
-<textarea id="fb"></textarea>
-<button class="feedback-btn" type="button" onclick="sendFB()">Gửi góp ý</button>
+<textarea id="feedback" rows="3"></textarea>
+<button type="button" class="feedback-btn" onclick="sendFeedback()">Gửi góp ý</button>
+</div>
 
 </div>
 
-<div id="thank" class="thank">
-<h1>Cảm ơn bạn!</h1>
-<button onclick="back()">Quay lại</button>
+<!-- THANK PAGE -->
+<div id="thankPage" class="thankyou">
+<h1>Cảm ơn bạn đã góp ý</h1>
+<p>Chúng tôi xin ghi nhận ý kiến của bạn</p>
+<button class="back-btn" onclick="goBack()">Quay lại</button>
 </div>
-
-<div id="toast" class="toast"></div>
 
 <script>
-// toast
-function show(msg){
-let t=document.getElementById("toast");
-t.innerText=msg;
-t.classList.add("show");
-setTimeout(()=>t.classList.remove("show"),2000);
-}
-
-// toggle
+// hiện/ẩn password
 function togglePass(){
-let p=document.getElementById("password");
-let icon=document.querySelector(".toggle");
-
-if(p.type==="password"){
-    p.type="text";
-    icon.innerText="🙈";
-}else{
-    p.type="password";
-    icon.innerText="👁";
-}
+    let p=document.getElementById("password");
+    p.type = (p.type==="password") ? "text" : "password";
 }
 
-// strength
-document.getElementById("password").addEventListener("input",function(){
-let v=this.value;
-let bar=document.getElementById("bar");
-
-let score=0;
-if(v.length>5) score++;
-if(/[A-Z]/.test(v)) score++;
-if(/[0-9]/.test(v)) score++;
-if(/[^A-Za-z0-9]/.test(v)) score++;
-
-let width=["0%","25%","50%","75%","100%"];
-let color=["","#ff4d4d","#ffa500","#4facfe","#28a745"];
-
-bar.style.width=width[score];
-bar.style.background=color[score];
-});
-
-// form
-document.getElementById("form").addEventListener("submit",e=>{
+// validate form
+document.getElementById("form").addEventListener("submit",function(e){
 e.preventDefault();
+
+let valid=true;
 
 let name=document.getElementById("name").value.trim();
 let email=document.getElementById("email").value.trim();
-let p=document.getElementById("password").value;
-let c=document.getElementById("confirm").value;
+let password=document.getElementById("password").value;
+let gender=document.querySelector('input[name="gender"]:checked');
+let lop=document.getElementById("class").value;
 
-if(!name||!email||!p||!c){
-    show("Điền đủ thông tin!");
-    return;
+document.getElementById("nameError").innerText="";
+document.getElementById("emailError").innerText="";
+document.getElementById("passwordError").innerText="";
+document.getElementById("genderError").innerText="";
+document.getElementById("classError").innerText="";
+
+if(name===""){
+    document.getElementById("nameError").innerText="Nhập tên!";
+    valid=false;
 }
 
 if(!email.includes("@")){
-    show("Email sai!");
-    return;
+    document.getElementById("emailError").innerText="Email sai!";
+    valid=false;
 }
 
-if(p.length<6){
-    show("Mật khẩu yếu!");
-    return;
+if(password.length<6){
+    document.getElementById("passwordError").innerText="Mật khẩu ≥ 6 ký tự!";
+    valid=false;
 }
 
-if(p!==c){
-    show("Mật khẩu không khớp!");
-    return;
+if(!gender){
+    document.getElementById("genderError").innerText="Chọn giới tính!";
+    valid=false;
 }
 
-show("Đăng ký thành công!");
-document.getElementById("form").reset();
-document.getElementById("bar").style.width="0%";
+if(lop===""){
+    document.getElementById("classError").innerText="Chọn lớp!";
+    valid=false;
+}
+
+if(valid){
+    alert("Đăng ký thành công!");
+}
 });
 
-// feedback
-function sendFB(){
-let fb=document.getElementById("fb").value.trim();
+// góp ý
+function sendFeedback(){
+let fb=document.getElementById("feedback").value.trim();
 
-if(!fb){
-    show("Nhập góp ý!");
+if(fb===""){
+    alert("Bạn chưa nhập góp ý!");
 }else{
-    document.getElementById("main").style.display="none";
-    document.getElementById("thank").style.display="block";
+    document.getElementById("mainPage").style.display="none";
+    document.getElementById("thankPage").style.display="block";
 }
 }
 
-// back
-function back(){
-document.getElementById("thank").style.display="none";
-document.getElementById("main").style.display="block";
+// quay lại
+function goBack(){
+document.getElementById("thankPage").style.display="none";
+document.getElementById("mainPage").style.display="block";
 }
 </script>
 
