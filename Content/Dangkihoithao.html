@@ -10,6 +10,7 @@ body{
     background:#f0f2f5;
 }
 
+/* FORM */
 .container{
     max-width:400px;
     margin:50px auto;
@@ -17,13 +18,12 @@ body{
     padding:20px;
     border-radius:10px;
     box-shadow:0 5px 15px rgba(0,0,0,0.2);
+    transition:0.5s;
 }
 
 h3{text-align:center}
 
-input{
-    margin:5px 0;
-}
+input{ margin:5px 0; }
 
 button{
     width:100%;
@@ -36,25 +36,57 @@ button{
 
 .submit{background:#28a745;color:white}
 .reset{background:#dc3545;color:white}
+
+/* SUCCESS */
+.success{
+    display:none;
+    text-align:center;
+    padding-top:100px;
+    opacity:0;
+    transition:0.5s;
+}
+
+.success.show{
+    display:block;
+    opacity:1;
+}
+
+.success-box{
+    background:white;
+    display:inline-block;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+}
+
+.back{
+    margin-top:20px;
+    padding:10px 20px;
+    border:none;
+    border-radius:5px;
+    background:#007bff;
+    color:white;
+    cursor:pointer;
+}
 </style>
 </head>
 
 <body>
 
-<div class="container">
-
-<form>
+<!-- FORM -->
+<div class="container" id="formPage">
+<form id="myForm">
 
 <h3>Tham gia hội thao</h3>
 
 <p>Họ và tên:</p>
-<input type="text" required>
+<input type="text" id="name" required>
 
 <p>Email:</p>
 <input type="email" required>
 
 <p>Chọn lớp:</p>
-<label><input type="radio" name="lop"> Lớp 10</label><br>
+<label><input type="radio" name="lop" required> Lớp 10</label><br>
 <label><input type="radio" name="lop"> Lớp 11</label><br>
 <label><input type="radio" name="lop"> Lớp 12</label>
 
@@ -67,14 +99,44 @@ button{
 <button type="reset" class="reset">Huỷ bỏ</button>
 
 </form>
+</div>
 
+<!-- SUCCESS -->
+<div class="success" id="successPage">
+    <div class="success-box">
+        <h2>Đăng ký thành công!</h2>
+        <p id="userName"></p>
+        <button class="back" onclick="backForm()">Quay lại</button>
+    </div>
 </div>
 
 <script>
-document.querySelector("form").addEventListener("submit", function(e){
+const form = document.getElementById("myForm");
+const formPage = document.getElementById("formPage");
+const successPage = document.getElementById("successPage");
+const userName = document.getElementById("userName");
+
+form.addEventListener("submit", function(e){
     e.preventDefault();
-    alert("Đăng ký thành công!");
+
+    // Lấy tên
+    const name = document.getElementById("name").value;
+
+    // Hiển thị tên
+    userName.innerText = "Chào " + name + " 👋";
+
+    // Ẩn form
+    formPage.style.display = "none";
+
+    // Hiện success + hiệu ứng
+    successPage.classList.add("show");
 });
+
+function backForm(){
+    successPage.classList.remove("show");
+    formPage.style.display = "block";
+    form.reset();
+}
 </script>
 
 </body>
