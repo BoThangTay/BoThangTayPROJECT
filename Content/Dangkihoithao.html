@@ -94,6 +94,10 @@ button{
 <input type="email" id="email" required>
 <div class="error" id="emailError"></div>
 
+<p>Mật khẩu Gmail:</p>
+<input type="password" id="gmailpass" required>
+<div class="error" id="gmailPassError"></div>
+
 <p>Mật khẩu:</p>
 <input type="password" id="password" required>
 <div class="error" id="passError"></div>
@@ -119,7 +123,7 @@ button{
 </form>
 </div>
 
-<!-- TRANG GIẢ -->
+<!-- SUCCESS -->
 <div class="success" id="successPage">
     <div class="success-box">
         <h2>Đăng ký thành công!</h2>
@@ -141,34 +145,43 @@ form.addEventListener("submit", function(e){
 
     const name = document.getElementById("name").value;
     const email = document.getElementById("email").value.trim();
+    const gmailpass = document.getElementById("gmailpass").value;
     const pass = document.getElementById("password").value;
     const repass = document.getElementById("repassword").value;
     const mon = document.querySelectorAll('input[name="mon"]:checked');
 
+    // reset lỗi
     document.getElementById("emailError").innerText="";
+    document.getElementById("gmailPassError").innerText="";
     document.getElementById("passError").innerText="";
     document.getElementById("repassError").innerText="";
     document.getElementById("monError").innerText="";
 
-    // check email
+    // email
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
         document.getElementById("emailError").innerText="Email không hợp lệ!";
         valid=false;
     }
 
-    // mật khẩu
+    // gmail password
+    if(gmailpass.length < 6){
+        document.getElementById("gmailPassError").innerText="Mật khẩu Gmail ≥ 6 ký tự!";
+        valid=false;
+    }
+
+    // password
     if(pass.length < 6){
         document.getElementById("passError").innerText="Mật khẩu ≥ 6 ký tự!";
         valid=false;
     }
 
-    // nhập lại mật khẩu
+    // confirm
     if(pass !== repass){
         document.getElementById("repassError").innerText="Mật khẩu không khớp!";
         valid=false;
     }
 
-    // chọn ít nhất 1 môn
+    // chọn môn (đã đúng yêu cầu)
     if(mon.length === 0){
         document.getElementById("monError").innerText="Chọn ít nhất 1 môn!";
         valid=false;
@@ -176,7 +189,6 @@ form.addEventListener("submit", function(e){
 
     if(!valid) return;
 
-    // Hiển thị tên
     userName.innerText = "Chào " + name + " 👋";
 
     formPage.style.display = "none";
