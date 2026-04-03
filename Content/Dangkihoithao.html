@@ -94,9 +94,13 @@ button{
 <input type="email" id="email" required>
 <div class="error" id="emailError"></div>
 
-<p>Mật khẩu Gmail:</p>
+<p>Mật khẩu:</p>
 <input type="password" id="password" required>
 <div class="error" id="passError"></div>
+
+<p>Nhập lại mật khẩu:</p>
+<input type="password" id="repassword" required>
+<div class="error" id="repassError"></div>
 
 <p>Chọn lớp:</p>
 <label><input type="radio" name="lop" required> Lớp 10</label><br>
@@ -104,9 +108,10 @@ button{
 <label><input type="radio" name="lop"> Lớp 12</label>
 
 <p>Tham dự môn:</p>
-<label><input type="checkbox"> Bóng bàn</label><br>
-<label><input type="checkbox"> Cầu lông</label><br>
-<label><input type="checkbox"> Cờ vua</label>
+<label><input type="checkbox" name="mon"> Bóng bàn</label><br>
+<label><input type="checkbox" name="mon"> Cầu lông</label><br>
+<label><input type="checkbox" name="mon"> Cờ vua</label>
+<div class="error" id="monError"></div>
 
 <button type="submit" class="submit">Đăng ký</button>
 <button type="reset" class="reset">Huỷ bỏ</button>
@@ -137,19 +142,35 @@ form.addEventListener("submit", function(e){
     const name = document.getElementById("name").value;
     const email = document.getElementById("email").value.trim();
     const pass = document.getElementById("password").value;
+    const repass = document.getElementById("repassword").value;
+    const mon = document.querySelectorAll('input[name="mon"]:checked');
 
     document.getElementById("emailError").innerText="";
     document.getElementById("passError").innerText="";
+    document.getElementById("repassError").innerText="";
+    document.getElementById("monError").innerText="";
 
-    // ✅ check email chuẩn hơn
+    // check email
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
         document.getElementById("emailError").innerText="Email không hợp lệ!";
         valid=false;
     }
 
-    // ✅ check mật khẩu
+    // mật khẩu
     if(pass.length < 6){
         document.getElementById("passError").innerText="Mật khẩu ≥ 6 ký tự!";
+        valid=false;
+    }
+
+    // nhập lại mật khẩu
+    if(pass !== repass){
+        document.getElementById("repassError").innerText="Mật khẩu không khớp!";
+        valid=false;
+    }
+
+    // chọn ít nhất 1 môn
+    if(mon.length === 0){
+        document.getElementById("monError").innerText="Chọn ít nhất 1 môn!";
         valid=false;
     }
 
@@ -158,10 +179,7 @@ form.addEventListener("submit", function(e){
     // Hiển thị tên
     userName.innerText = "Chào " + name + " 👋";
 
-    // Ẩn form
     formPage.style.display = "none";
-
-    // Hiện trang giả
     successPage.classList.add("show");
 });
 
