@@ -130,8 +130,8 @@ button{
 
 <!-- THANK PAGE -->
 <div id="thankPage" class="thankyou">
-<h1>Cảm ơn bạn đã góp ý</h1>
-<p>Chúng tôi xin ghi nhận ý kiến của bạn</p>
+<h1 id="thankTitle"></h1>
+<p id="thankContent"></p>
 <button class="back-btn" onclick="goBack()">Quay lại</button>
 </div>
 
@@ -193,10 +193,17 @@ if(valid){
 // góp ý
 function sendFeedback(){
 let fb=document.getElementById("feedback").value.trim();
+let name=document.getElementById("name").value.trim();
 
 if(fb===""){
     alert("Bạn chưa nhập góp ý!");
 }else{
+    document.getElementById("thankTitle").innerText =
+        "Cảm ơn bạn " + (name || "bạn") + " đã góp ý";
+
+    document.getElementById("thankContent").innerText =
+        "Ý kiến của bạn: " + fb;
+
     document.getElementById("mainPage").style.display="none";
     document.getElementById("thankPage").style.display="block";
 }
