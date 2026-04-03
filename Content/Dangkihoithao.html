@@ -36,7 +36,7 @@ button{
 .submit{background:#28a745;color:white}
 .reset{background:#dc3545;color:white}
 
-/* SUCCESS PAGE (giả trang) */
+/* SUCCESS PAGE */
 .success{
     display:none;
     justify-content:center;
@@ -71,6 +71,11 @@ button{
     color:white;
     cursor:pointer;
 }
+
+.error{
+    color:red;
+    font-size:13px;
+}
 </style>
 </head>
 
@@ -86,7 +91,12 @@ button{
 <input type="text" id="name" required>
 
 <p>Email:</p>
-<input type="email" required>
+<input type="email" id="email" required>
+<div class="error" id="emailError"></div>
+
+<p>Mật khẩu Gmail:</p>
+<input type="password" id="password" required>
+<div class="error" id="passError"></div>
 
 <p>Chọn lớp:</p>
 <label><input type="radio" name="lop" required> Lớp 10</label><br>
@@ -122,7 +132,28 @@ const userName = document.getElementById("userName");
 form.addEventListener("submit", function(e){
     e.preventDefault();
 
+    let valid = true;
+
     const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value.trim();
+    const pass = document.getElementById("password").value;
+
+    document.getElementById("emailError").innerText="";
+    document.getElementById("passError").innerText="";
+
+    // ✅ check email chuẩn hơn
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+        document.getElementById("emailError").innerText="Email không hợp lệ!";
+        valid=false;
+    }
+
+    // ✅ check mật khẩu
+    if(pass.length < 6){
+        document.getElementById("passError").innerText="Mật khẩu ≥ 6 ký tự!";
+        valid=false;
+    }
+
+    if(!valid) return;
 
     // Hiển thị tên
     userName.innerText = "Chào " + name + " 👋";
